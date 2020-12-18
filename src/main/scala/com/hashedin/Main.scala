@@ -123,13 +123,13 @@ object Main {
       .select("year", "all_column.*").as[AwardWinningTitlesJSON]
 
     val queryThirdCsvDS = csvDataSet
-      .filter($"year" >= 1997 && $"year" <= 2000).groupBy("director")
+      .filter($"year" >= startYear && $"year" <= endYear).groupBy("director")
       .agg(count("title").as("noOfTitle"), sum("votes").as("sumOfVotes"))
       .withColumn("highest_votes", col("sumOfVotes").divide(col("noOfTitle")))
       .select("director", "highest_votes").as[DirectorListCSV]
 
     val queryThirdJsonDS = jsonDataSet
-      .filter($"year" >= 1997 && $"year" <= 2000).groupBy("director")
+      .filter($"year" >= startYear && $"year" <= endYear).groupBy("director")
       .agg(count("title").as("noOfTitle"), sum("votes").as("sumOfVotes"))
       .withColumn("highest_votes", col("sumOfVotes").divide(col("noOfTitle")))
       .select("director", "highest_votes").as[DirectorListJSON]
